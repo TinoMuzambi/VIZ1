@@ -32,7 +32,14 @@ let selectedCourse = "CSC1010H";
 
 // Monitor the select element for changes and update the selectedCourse variable.
 selectElement.addEventListener("change", (e) => {
-	selectedCourse = coursesList[e.target.selectedIndex - 1];
+	selectedCourse = coursesList[e.target.selectedIndex];
+	chart.series[0].setData(marksByStatus.Pass.map((row) => row[selectedCourse]));
+	chart.series[1].setData(marksByStatus.Fail.map((row) => row[selectedCourse]));
+	chart.series[2].setData(marksByStatus.DNF.map((row) => row[selectedCourse]));
+	chart.setTitle({
+		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
+	});
+	chart.redraw();
 	console.log({ selectedCourse });
 });
 
@@ -40,19 +47,25 @@ selectElement.addEventListener("change", (e) => {
 const marksByStatus = groupBy(marks, "Status");
 console.log(marksByStatus);
 
-Highcharts.chart("container", {
+let chart = Highcharts.chart("container", {
+	// chart: { height: 100 + "%" },
 	title: {
-		text: "Statuses of Computer Science Grades",
+		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
 		align: "center",
 	},
+	subtitle: {
+		text: "Analysis of Pass, Fail & DNF Counts",
+	},
 	xAxis: {
+		title: { text: "Year" },
 		categories: [...new Set(marks.map((el) => el.Year))],
 	},
 	yAxis: {
 		title: {
-			text: "",
+			text: "Number of Students",
 		},
 	},
+	credits: { enabled: false },
 	// tooltip: {
 	// 	valueSuffix: " million ",
 	// },
@@ -74,9 +87,10 @@ Highcharts.chart("container", {
 		},
 		{
 			type: "column",
-			name: "DNF",
+			name: "Did Not Finish (DNF)",
 			data: marksByStatus.DNF.map((row) => row[selectedCourse]),
 		},
+
 		// {
 		// 	type: "line",
 		// 	step: "center",
