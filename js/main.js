@@ -48,7 +48,7 @@ const marksByStatus = groupBy(marks, "Status");
 console.log(marksByStatus);
 
 let chart = Highcharts.chart("container", {
-	// chart: { height: 100 + "%" },
+	chart: { height: 800 },
 	title: {
 		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
 		align: "center",
