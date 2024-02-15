@@ -16,7 +16,7 @@ Highcharts.chart("container", {
 		align: "center",
 	},
 	xAxis: {
-		categories: ["2019", "2020", "2021", "2022", "2023"],
+		categories: [...new Set(marks.map((el) => el.Year))],
 	},
 	yAxis: {
 		title: {
@@ -35,17 +35,17 @@ Highcharts.chart("container", {
 		{
 			type: "column",
 			name: "Pass",
-			data: marksByStatus.Pass.map((row) => row.CSC1010H),
+			data: marksByStatus.Pass.map((row) => row["CSC1010H"]),
 		},
 		{
 			type: "column",
 			name: "Fail",
-			data: marksByStatus.Fail.map((row) => row.CSC1010H),
+			data: marksByStatus.Fail.map((row) => row["CSC1010H"]),
 		},
 		{
 			type: "column",
 			name: "DNF",
-			data: marksByStatus.DNF.map((row) => row.CSC1010H),
+			data: marksByStatus.DNF.map((row) => row["CSC1010H"]),
 		},
 		// {
 		// 	type: "line",
