@@ -1,3 +1,15 @@
+import marks from "./data/marks.json";
+
+const groupBy = function (xs, key) {
+	return xs.reduce(function (rv, x) {
+		(rv[x[key]] = rv[x[key]] || []).push(x);
+		return rv;
+	}, {});
+};
+
+const marksByStatus = groupBy(marks, "Status");
+console.log(marksByStatus);
+
 Highcharts.chart("container", {
 	title: {
 		text: "Statuses of Computer Science Grades",
@@ -23,17 +35,17 @@ Highcharts.chart("container", {
 		{
 			type: "column",
 			name: "Pass",
-			data: [48, 33, 31, 70, 71],
+			data: marksByStatus.Pass.map((row) => row.CSC1010H),
 		},
 		{
 			type: "column",
 			name: "Fail",
-			data: [27, 17, 18, 29, 23],
+			data: marksByStatus.Fail.map((row) => row.CSC1010H),
 		},
 		{
 			type: "column",
 			name: "DNF",
-			data: [2, 4, 1, 0, 0],
+			data: marksByStatus.DNF.map((row) => row.CSC1010H),
 		},
 		// {
 		// 	type: "line",
