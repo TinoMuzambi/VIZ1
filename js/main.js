@@ -7,6 +7,19 @@ const groupBy = function (xs, key) {
 	}, {});
 };
 
+console.log();
+
+const selectElement = document.getElementById("courses");
+
+Object.keys(marks[0])
+	.filter((el) => el.startsWith("CSC"))
+	.map((lang, i) => {
+		let opt = document.createElement("option");
+		opt.value = i; // the index
+		opt.innerHTML = lang;
+		selectElement.append(opt);
+	});
+
 const marksByStatus = groupBy(marks, "Status");
 console.log(marksByStatus);
 
