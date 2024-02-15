@@ -79,16 +79,19 @@ let chart = Highcharts.chart("container", {
 			type: "column",
 			name: "Pass",
 			data: marksByStatus.Pass.map((row) => row[selectedCourse]),
+			color: "#002855",
 		},
 		{
 			type: "column",
 			name: "Fail",
 			data: marksByStatus.Fail.map((row) => row[selectedCourse]),
+			color: "#da6e5f",
 		},
 		{
 			type: "column",
 			name: "Did Not Finish (DNF)",
 			data: marksByStatus.DNF.map((row) => row[selectedCourse]),
+			color: "#ac9f3c",
 		},
 
 		// {
