@@ -39,16 +39,71 @@ selectElement.addEventListener("change", (e) => {
 	chart.setTitle({
 		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
 	});
+
 	chart.redraw();
 	console.log({ selectedCourse });
 });
 
 // Group marks by the status key.
 const marksByStatus = groupBy(marks, "Status");
-console.log(marksByStatus);
 
-let chart = Highcharts.chart("container", {
-	chart: { height: 800 },
+function addOutlineTo2020(series, index2020) {
+	series.data[index2020].update({
+		borderWidth: 2,
+		borderColor: "red",
+	});
+}
+
+function getImageForLegendItem(legendItem) {
+	if (legendItem === "Pass") {
+		return "https://p1.hiclipart.com/preview/631/856/929/check-mark-symbol-checkbox-black-and-white-text-line-circle-area-angle-png-clipart.jpg";
+	} else if (legendItem === "Fail") {
+		return "https://www.tinotech.co.za/media/ftgkvrsehu4cj4dv9hj9gsp9o2-0f11181185353f6f05b2f4b338870c21.png";
+	} else if (legendItem === "Did Not Finish (DNF)") {
+		return "https://www.tinotech.co.za/media/5b43ef96cea77-e3c9466540863ace1fa42324f4b0d031.png";
+	}
+}
+
+let chart;
+
+chart = Highcharts.chart("container", {
+	chart: {
+		height: 800,
+
+		events: {
+			load() {
+				setTimeout(() => {
+					const index2020 = chart.xAxis[0].categories.indexOf(2020);
+
+					chart.series.forEach((series) => {
+						addOutlineTo2020(series, index2020);
+					});
+				}, 500);
+			},
+		},
+	},
+	legend: {
+		itemStyle: {
+			width: "40px",
+			height: "40px",
+		},
+		symbolWidth: 40,
+		symbolHeight: 40,
+		symbolPadding: 10,
+		symbolRadius: 0,
+		labelFormatter: function () {
+			return `<div style="display: flex;">
+			<span>${this.name}</span>
+			<img src="${getImageForLegendItem(
+				this.name
+			)}" style="width: 40px; height: 40px;" />
+			</div>`;
+		},
+		align: "right", // Align the legend to the left
+		verticalAlign: "bottom", // Align the legend to the bottom
+		x: 10, // Adjust the horizontal position of the legend
+		y: 10,
+	},
 	title: {
 		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
 		align: "center",
@@ -72,26 +127,55 @@ let chart = Highcharts.chart("container", {
 	plotOptions: {
 		series: {
 			borderRadius: "25%",
+			dataLabels: {
+				enabled: true,
+				color: "black",
+				style: {
+					textOutline: "1px contrast",
+				},
+				formatter: function () {
+					return this.y;
+				},
+			},
 		},
 	},
+
 	series: [
 		{
 			type: "column",
 			name: "Pass",
 			data: marksByStatus.Pass.map((row) => row[selectedCourse]),
-			color: "#002855",
+			color: {
+				pattern: {
+					image:
+						"https://p1.hiclipart.com/preview/631/856/929/check-mark-symbol-checkbox-black-and-white-text-line-circle-area-angle-png-clipart.jpg",
+					aspectRatio: 1,
+				},
+			},
 		},
 		{
 			type: "column",
 			name: "Fail",
 			data: marksByStatus.Fail.map((row) => row[selectedCourse]),
-			color: "#da6e5f",
+			color: {
+				pattern: {
+					image:
+						"https://www.tinotech.co.za/media/ftgkvrsehu4cj4dv9hj9gsp9o2-0f11181185353f6f05b2f4b338870c21.png",
+					aspectRatio: 1,
+				},
+			},
 		},
 		{
 			type: "column",
 			name: "Did Not Finish (DNF)",
 			data: marksByStatus.DNF.map((row) => row[selectedCourse]),
-			color: "#ac9f3c",
+			color: {
+				pattern: {
+					image:
+						"https://www.tinotech.co.za/media/5b43ef96cea77-e3c9466540863ace1fa42324f4b0d031.png",
+					aspectRatio: 1,
+				},
+			},
 		},
 
 		// {
