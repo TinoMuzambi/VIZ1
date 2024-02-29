@@ -7,3 +7,7 @@
 	outline: none;
 	border-radius: 0.2rem;
 }
+
+#container {
+	background-image: url("./bg.png");
+}

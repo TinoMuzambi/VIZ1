@@ -37,7 +37,7 @@ selectElement.addEventListener("change", (e) => {
 	chart.series[1].setData(marksByStatus.Fail.map((row) => row[selectedCourse]));
 	chart.series[2].setData(marksByStatus.DNF.map((row) => row[selectedCourse]));
 	chart.setTitle({
-		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
+		text: `Did COVID-19 Really affect ${selectedCourse} Grades`,
 	});
 
 	chart.redraw();
@@ -49,7 +49,7 @@ const marksByStatus = groupBy(marks, "Status");
 
 function addOutlineTo2020(series, index2020) {
 	series.data[index2020].update({
-		borderWidth: 2,
+		borderWidth: 4,
 		borderColor: "red",
 	});
 }
@@ -69,7 +69,7 @@ let chart;
 chart = Highcharts.chart("container", {
 	chart: {
 		height: 800,
-
+		plotBackgroundImage: "https://www.tinotech.co.za/media/bg.png",
 		events: {
 			load() {
 				setTimeout(() => {
@@ -89,11 +89,11 @@ chart = Highcharts.chart("container", {
 		},
 		symbolWidth: 40,
 		symbolHeight: 40,
-		symbolPadding: 10,
+		// symbolPadding: 10,
 		symbolRadius: 0,
 		labelFormatter: function () {
 			return `<div style="display: flex;">
-			<span>${this.name}</span>
+			<span>${this.name === "Did Not Finish (DNF)" ? "DNF" : this.name}</span>
 			<img src="${getImageForLegendItem(
 				this.name
 			)}" style="width: 40px; height: 40px;" />
@@ -105,7 +105,7 @@ chart = Highcharts.chart("container", {
 		y: 10,
 	},
 	title: {
-		text: `Performance Trends of ${selectedCourse} for 2019 - 2023`,
+		text: `Did COVID-19 Really affect ${selectedCourse} Grades`,
 		align: "center",
 	},
 	subtitle: {
@@ -127,6 +127,8 @@ chart = Highcharts.chart("container", {
 	plotOptions: {
 		series: {
 			borderRadius: "25%",
+			borderWidth: 2,
+			borderColor: "black",
 			dataLabels: {
 				enabled: true,
 				color: "black",
@@ -147,8 +149,7 @@ chart = Highcharts.chart("container", {
 			data: marksByStatus.Pass.map((row) => row[selectedCourse]),
 			color: {
 				pattern: {
-					image:
-						"https://p1.hiclipart.com/preview/631/856/929/check-mark-symbol-checkbox-black-and-white-text-line-circle-area-angle-png-clipart.jpg",
+					image: "https://www.tinotech.co.za/media/Pass2.png",
 					aspectRatio: 1,
 				},
 			},
